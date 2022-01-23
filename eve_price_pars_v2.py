@@ -18,7 +18,7 @@ print("Hell")
 data = {"market_name": "jita", "items": [{"name": "Enriched Uranium"}, {"name": "Oxygen"}, {"name": "Mechanical Parts"},
                                          {"name": "Coolant"}, {"name": "Robotics"}, {"name": "Heavy Water"},
                                          {"name": "Liquid Ozone"}, {"name": "Strontium Clathrates"},
-                                         {"name": "Helium Isotopes"}, {"name": "nitrogen fuel block"}]
+                                         {"name": "Helium Isotopes"}, {"name": "Nitrogen Fuel Block"}]
         }
 
 jdata = requests.post("https://evepraisal.com/appraisal/structured.json", data=json.dumps(data),
