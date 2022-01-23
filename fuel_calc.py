@@ -6,8 +6,25 @@ from fake_useragent import UserAgent
 
 
 def prices_request():
-    print("Requesting pricec from evepraical")
-    pass
+    print("Requesting prices from evepraical")
+
+    data = {"market_name": "jita",
+            "items": [{"name": "Enriched Uranium"}, {"name": "Oxygen"}, {"name": "Mechanical Parts"},
+                      {"name": "Coolant"}, {"name": "Robotics"}, {"name": "Heavy Water"},
+                      {"name": "Liquid Ozone"}, {"name": "Strontium Clathrates"},
+                      {"name": "Helium Isotopes"}, {"name": "Nitrogen Fuel Block"}]
+            }
+
+    jdata = requests.post("https://evepraisal.com/appraisal/structured.json", data=json.dumps(data)).text
+    data = json.loads(jdata)
+
+    all_prices = {}
+    for item in data["appraisal"]["items"]:
+        all_prices.update({item["name"]: {"Buy": item["prices"]["buy"]["max"],
+                                          "Sell": item["prices"]["sell"]["min"]}, })
+
+    print("Request done!")
+    return all_prices
 
 
 def main():
@@ -79,7 +96,9 @@ def main():
     runs = [runs_h_water, runs_l_ozone, runs_s_clathrates, runs_h_isotopes]
     runs.sort()
     runs = int(runs[0])
-    print(f"Enough materials for {runs} runs.")
+    print(f"Enough materials for {runs} runs.\n")
+
+    all_prices = prices_request()
 
     print("\nPlanetary what we need:")
 
