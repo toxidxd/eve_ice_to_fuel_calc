@@ -1,6 +1,7 @@
 import csv
 import json
 import requests
+import setup
 from fake_useragent import UserAgent
 
 
@@ -19,19 +20,18 @@ def main():
                              "Liquid Ozone": 691,
                              "Strontium Clathrates": 104},
                  }
-    h_water_cnt = 0
-    l_ozone = 0
-    s_clathrates = 0
-    h_isotopes = 0
+    h_water_cnt = setup.h_water_have
+    l_ozone_cnt = setup.l_ozone_have
+    s_clathrates_cnt = setup.s_clathrates_have
+    h_isotopes_cnt = setup.h_isotopes_have
 
     print("Hi!")
-    print("Enter initial data :")
-    ore_efficiency = float(input("Ore efficiency (ex. 0.83) = "))
+    ore_efficiency = setup.ore_efficiency
 
-    d_glitter_cnt = int(input("Dark Glitter count = "))
-    icicle_cnt = int(input("Enriched Clear Icicle count = "))
-    g_crust_cnt = int(input("Glare Crust count = "))
-    gledius_cnt = int(input("Gelidus count = "))
+    d_glitter_cnt = setup.d_glitter_have
+    icicle_cnt = setup.icicle_have
+    g_crust_cnt = setup.g_crust_have
+    gledius_cnt = setup.gledius_have
 
     ice_types.get("Dark Glitter").update({"cnt": d_glitter_cnt})
     ice_types.get("Enriched Clear Icicle").update({"cnt": icicle_cnt})
@@ -41,21 +41,15 @@ def main():
     for ice, value in ice_types.items():
         print(ice)
         h_water_cnt += value.get("Heavy Water") * value.get("cnt") * ore_efficiency
-        l_ozone += value.get("Liquid Ozone") * value.get("cnt") * ore_efficiency
-        s_clathrates += value.get("Strontium Clathrates") * value.get("cnt") * ore_efficiency
-    h_isotopes = ice_types.get("Enriched Clear Icicle").get("Helium Isotopes") * ice_types.get("Enriched Clear Icicle").get("cnt") * ore_efficiency
+        l_ozone_cnt += value.get("Liquid Ozone") * value.get("cnt") * ore_efficiency
+        s_clathrates_cnt += value.get("Strontium Clathrates") * value.get("cnt") * ore_efficiency
+    h_isotopes_cnt += ice_types.get("Enriched Clear Icicle").get("Helium Isotopes") * ice_types.get("Enriched Clear Icicle").get("cnt") * ore_efficiency
 
     print("We have:")
     print("Heavy Water:", h_water_cnt)
-    print("Liquid Ozone:", l_ozone)
-    print("Strontium Clathrates:", s_clathrates)
-    print("Helium Isotopes:", h_isotopes)
-
-
-
-
-
-
+    print("Liquid Ozone:", l_ozone_cnt)
+    print("Strontium Clathrates:", s_clathrates_cnt)
+    print("Helium Isotopes:", h_isotopes_cnt)
 
 
 # print(type(ice_types))
