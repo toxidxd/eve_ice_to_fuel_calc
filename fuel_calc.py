@@ -5,6 +5,11 @@ import setup
 from fake_useragent import UserAgent
 
 
+def prices_request():
+    print("Requesting pricec from evepraical")
+    pass
+
+
 def main():
     print("Fuel calculating script!")
     helium_f_b = {
@@ -73,13 +78,14 @@ def main():
     print(f"Enough Helium Isotopes for {runs_h_isotopes} runs")
     runs = [runs_h_water, runs_l_ozone, runs_s_clathrates, runs_h_isotopes]
     runs.sort()
-    print()
-    print(f"Enough materials for {int(runs[0])} runs.")
+    runs = int(runs[0])
+    print(f"Enough materials for {runs} runs.")
 
     print("\nPlanetary what we need:")
 
 # print(type(ice_types))
 # print(ice_types.get("Gelidus").get("Heavy Water"))
+
 
 if __name__ == "__main__":
     main()
