@@ -119,10 +119,5 @@ def main():
     planet_cnt(runs)
 
 
-
-# print(type(ice_types))
-# print(ice_types.get("Gelidus").get("Heavy Water"))
-
-
 if __name__ == "__main__":
     main()
