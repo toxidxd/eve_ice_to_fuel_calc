@@ -27,6 +27,10 @@ def prices_request():
     return all_prices
 
 
+def planet_cnt(runs):
+    pass
+
+
 def main():
     print("Fuel calculating script!")
 
@@ -112,6 +116,8 @@ def main():
     print(all_prices.get('Coolant').get('Sell'))
 
     print("\nPlanetary what we need:")
+    planet_cnt(runs)
+
 
 
 # print(type(ice_types))
