@@ -40,7 +40,7 @@ def prices_request():
             "items": [{"name": "Enriched Uranium"}, {"name": "Oxygen"}, {"name": "Mechanical Parts"},
                       {"name": "Coolant"}, {"name": "Robotics"}, {"name": "Heavy Water"},
                       {"name": "Liquid Ozone"}, {"name": "Strontium Clathrates"},
-                      {"name": "Helium Isotopes"}, {"name": "Nitrogen Fuel Block"}]
+                      {"name": "Helium Isotopes"}, {"name": "Helium Fuel Block"}]
             }
 
     jdata = requests.post("https://evepraisal.com/appraisal/structured.json", data=json.dumps(data)).text
@@ -79,6 +79,22 @@ def reprocess(ice_have, raw_mat_have):
     return raw_mat_count
 
 
+def runs_cnt(raw_mat_count):
+    runs_h_water = raw_mat_count.get("Heavy Water") // helium_f_b.get("Heavy Water")
+    print(f"Enough Heavy Water for {runs_h_water} runs")
+    runs_l_ozone = raw_mat_count.get("Liquid Ozone") // helium_f_b.get("Liquid Ozone")
+    print(f"Enough Liquid Ozone for {runs_l_ozone} runs")
+    runs_s_clathrates = raw_mat_count.get("Strontium Clathrates") // helium_f_b.get("Strontium Clathrates")
+    print(f"Enough Strontium Clathrates for {runs_s_clathrates} runs")
+    runs_h_isotopes = raw_mat_count.get("Helium Isotopes") // helium_f_b.get("Helium Isotopes")
+    print(f"Enough Helium Isotopes for {runs_h_isotopes} runs")
+    runs = [runs_h_water, runs_l_ozone, runs_s_clathrates, runs_h_isotopes]
+    runs.sort()
+    runs = int(runs[0])
+
+    return runs
+
+
 def main():
     print("Fuel calculating script!")
 
@@ -108,7 +124,18 @@ def main():
     }
 
     raw_mat_count = reprocess(ice_have, raw_mat_have)
-    print(raw_mat_count)
+
+    runs = runs_cnt(raw_mat_count)
+
+    print('Start calculating profit!')
+    print('ZzzZzzz...\n')
+
+
+
+
+
+
+
 
 
 if __name__ == "__main__":
