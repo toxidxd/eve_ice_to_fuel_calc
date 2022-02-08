@@ -172,6 +172,9 @@ def main():
     print(f'Profit - {"{:,}".format(profit)}')
 
 # TODO add in script BPC efficiency
+# TODO add couriers contracts calculating
+
+    input()
 
 
 if __name__ == "__main__":
