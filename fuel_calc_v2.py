@@ -1,8 +1,7 @@
-import csv
 import json
 import requests
 import setup
-from fake_useragent import UserAgent
+
 
 helium_f_b = {
         "Enriched Uranium": 4,
@@ -48,8 +47,8 @@ def prices_request():
 
     all_prices = {}
     for item in data["appraisal"]["items"]:
-        all_prices.update({item["name"]: {"Buy": item["prices"]["buy"]["max"],
-                                          "Sell": item["prices"]["sell"]["min"]}, })
+        all_prices.update({item["name"]: {"Buy": int(item["prices"]["buy"]["max"]),
+                                          "Sell": int(item["prices"]["sell"]["min"])}, })
 
     print("Request done!")
     return all_prices
@@ -95,6 +94,14 @@ def runs_cnt(raw_mat_count):
     return runs
 
 
+def cost_calc(commo_dict, prices, s_b):
+    commo_cost = 0
+    for item, value in commo_dict.items():
+        commo_cost += prices.get(item).get(s_b) * value
+
+    return commo_cost
+
+
 def main():
     print("Fuel calculating script!")
 
@@ -127,15 +134,42 @@ def main():
 
     runs = runs_cnt(raw_mat_count)
 
-    print('Start calculating profit!')
-    print('ZzzZzzz...\n')
+    raw_mat_need = {
+        'Heavy Water': helium_f_b.get('Heavy Water') * runs,
+        'Liquid Ozone': helium_f_b.get('Liquid Ozone') * runs,
+        'Strontium Clathrates': helium_f_b.get('Strontium Clathrates') * runs,
+        'Helium Isotopes': helium_f_b.get('Helium Isotopes') * runs,
+    }
 
+    planet_prod_need = {
+        'Enriched Uranium': helium_f_b.get('Enriched Uranium') * runs,
+        'Oxygen': helium_f_b.get('Oxygen') * runs,
+        'Mechanical Parts': helium_f_b.get('Mechanical Parts') * runs,
+        'Coolant': helium_f_b.get('Coolant') * runs,
+        'Robotics': helium_f_b.get('Robotics') * runs,
+    }
 
+    planet_prod_need_buy = {
+        'Enriched Uranium': helium_f_b.get('Enriched Uranium') * runs - planet_prod_have.get('Enriched Uranium'),
+        'Oxygen': helium_f_b.get('Oxygen') * runs - planet_prod_have.get('Oxygen'),
+        'Mechanical Parts': helium_f_b.get('Mechanical Parts') * runs - planet_prod_have.get('Mechanical Parts'),
+        'Coolant': helium_f_b.get('Coolant') * runs - planet_prod_have.get('Coolant'),
+        'Robotics': helium_f_b.get('Robotics') * runs - planet_prod_have.get('Robotics'),
+    }
 
+    raw_mat_need_cost = cost_calc(raw_mat_need, all_prices, 'Buy')
+    planet_prod_need_cost = cost_calc(planet_prod_need, all_prices, 'Sell')
+    planet_prod_need_buy_cost = cost_calc(planet_prod_need_buy, all_prices, 'Sell')
+    all_mat_cost = raw_mat_need_cost + planet_prod_need_cost
+    fuel_cost = all_prices.get('Helium Fuel Block').get('Sell') * runs * 40
+    profit = fuel_cost - all_mat_cost
 
-
-
-
+    print(f'\nRaw mats cost (Jita Buy) {"{:,}".format(raw_mat_need_cost)} ISK')
+    print(f'Planetary products cost (Jita Sell) {"{:,}".format(planet_prod_need_cost)} ISK '
+          f'(Need buy {"{:,}".format(planet_prod_need_buy_cost)} ISK)')
+    print(f'All mats cost {"{:,}".format(all_mat_cost)} ISK')
+    print(f'Produced Fuel cost (Jita Sell) {fuel_cost} ISK')
+    print(f'Profit - {"{:,}".format(profit)}')
 
 
 if __name__ == "__main__":

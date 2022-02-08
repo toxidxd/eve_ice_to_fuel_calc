@@ -19,4 +19,4 @@ enr_uranium = 40
 oxygen = 222
 mech_parts = 48
 coolant = 9
-robotics = 1
+robotics = 11
