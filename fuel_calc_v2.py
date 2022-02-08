@@ -171,6 +171,8 @@ def main():
     print(f'Produced Fuel cost (Jita Sell) {fuel_cost} ISK')
     print(f'Profit - {"{:,}".format(profit)}')
 
+# TODO add in script BPC efficiency
+
 
 if __name__ == "__main__":
     main()
